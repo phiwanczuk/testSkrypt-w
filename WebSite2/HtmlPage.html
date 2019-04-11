@@ -1,10 +1,12 @@
-﻿<!DOCTYPE html>
+﻿
+<!DOCTYPE html>
 <html>
 <head>
     <title>Skrypty</title>
-    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
     <meta charset="UTF-8">
     <script src="flowchart.js"></script>
+    <link rel="stylesheet" href="style.css">
     <script id="code">
         function init() {
             if (window.goSamples) goSamples();  // init for these samples -- you don't need to call this
@@ -41,8 +43,9 @@
                     {
                         // the Node.location is at the center of each node
                         locationSpot: go.Spot.Center,
-                        //isShadowed: true,
-                        //shadowColor: "#888",
+                        isShadowed: true,
+                        shadowColor: "#888",
+                        
                         // handle mouse enter/leave events to show/hide the ports
                         mouseEnter: function (e, obj) { showPorts(obj.part, true); },
                         mouseLeave: function (e, obj) { showPorts(obj.part, false); }
@@ -73,17 +76,17 @@
                 $(go.Node, "Spot", nodeStyle(),
                     // the main object is a Panel that surrounds a TextBlock with a rectangular Shape
                     $(go.Panel, "Auto",
-                        $(go.Shape, "Rectangle",
-                            { fill: "red", stroke: null },
+                        $(go.Shape, "RoundedRectangle",
+                            { fill: "red", stroke: null},
                             new go.Binding("figure", "figure")),
                         $(go.TextBlock,
                             {
-                                font: "bold 11pt Helvetica, Arial, sans-serif",
+                                font: "8pt Helvetica, Arial, sans-serif",
                                 stroke: lightText,
-                                margin: 4,
-                                maxSize: new go.Size(160, NaN),
+                                margin: 8,
+                                maxSize: new go.Size(100, 50),
                                 wrap: go.TextBlock.WrapFit,
-                                editable: false
+                                editable: true
                             },
                             new go.Binding("text").makeTwoWay())
                     ),
@@ -97,17 +100,20 @@
                 $(go.Node, "Spot", nodeStyle(),
                     // the main object is a Panel that surrounds a TextBlock with a rectangular Shape
                     $(go.Panel, "Auto",
-                        $(go.Shape, "Rectangle",
+                        $(go.Shape, "RoundedRectangle",
                             { fill: "green", stroke: null },
                             new go.Binding("figure", "figure")),
                         $(go.TextBlock,
                             {
-                                font: "bold 11pt Helvetica, Arial, sans-serif",
+                                font: "8pt Helvetica, Arial, sans-serif",
+                                overflow: scroll,
                                 stroke: lightText,
-                                margin: 4,
-                                maxSize: new go.Size(2000, NaN),
+                                margin: 8,
+                                maxSize: new go.Size(100, 50),
                                 wrap: go.TextBlock.WrapFit,
-                                editable: false
+                                editable: true
+                         
+                                
                             },
                             new go.Binding("text").makeTwoWay())
                     ),
@@ -116,14 +122,15 @@
                     makePort("L", go.Spot.Left, true, true),
                     makePort("R", go.Spot.Right, true, true),
                     makePort("B", go.Spot.Bottom, true, false)
-                ));
+                ));     
+
             myDiagram.nodeTemplateMap.add("Start",
                 $(go.Node, "Spot", nodeStyle(),
                     $(go.Panel, "Auto",
                         $(go.Shape, "Circle",
-                            { minSize: new go.Size(40, 40), fill: "crimson", stroke: null }),
+                            { minSize: new go.Size(40, 40), fill: "#79C900", stroke: null }),
                         $(go.TextBlock, "Start",
-                            { font: "bold 11pt Helvetica, Arial, sans-serif", stroke: lightText },
+                            { font: "8pt Helvetica, Arial, sans-serif", stroke: lightText },
                             new go.Binding("text"))
                     ),
                     // three named ports, one on each side except the top, all output only:
@@ -135,9 +142,9 @@
                 $(go.Node, "Spot", nodeStyle(),
                     $(go.Panel, "Auto",
                         $(go.Shape, "Circle",
-                            { minSize: new go.Size(40, 40), fill: "black", stroke: null }),
+                            { minSize: new go.Size(40, 40), fill: "#DC3C00", stroke: null }),
                         $(go.TextBlock, "End",
-                            { font: "bold 11pt Helvetica, Arial, sans-serif", stroke: lightText },
+                            { font: "8pt Helvetica, Arial, sans-serif", stroke: lightText },
                             new go.Binding("text"))
                     ),
                     // three named ports, one on each side except the bottom, all input only:
@@ -145,23 +152,25 @@
                     makePort("L", go.Spot.Left, false, true),
                     makePort("R", go.Spot.Right, false, true)
                 ));
-            //myDiagram.nodeTemplateMap.add("Comment",
-            //    $(go.Node, "Auto", nodeStyle(),
-            //        $(go.Shape, "File",
-            //            { fill: "#EFFAB4", stroke: null }),
-            //        $(go.TextBlock,
-            //            {
-            //                margin: 5,
-            //                maxSize: new go.Size(200, NaN),
-            //                wrap: go.TextBlock.WrapFit,
-            //                textAlign: "center",
-            //                editable: true,
-            //                font: "bold 12pt Helvetica, Arial, sans-serif",
-            //                stroke: '#454545'
-            //            },
-            //            new go.Binding("text").makeTwoWay())
-            //        // no ports, because no links are allowed to connect with a comment
-            //    ));
+            myDiagram.nodeTemplateMap.add("Comment",
+                $(go.Node, "Auto", nodeStyle(),
+                   $(go.Shape, "File",
+                        { fill: "#EFFAB4", stroke: null }),
+                    $(go.TextBlock,
+                        {
+                            margin: 5,
+                            maxSize: new go.Size(100, 50),
+                            wrap: go.TextBlock.WrapFit,
+                            textAlign: "center",
+                            editable: true,
+                            font: "8pt Helvetica, Arial, sans-serif",
+                            stroke: '#454545',
+                            overflow: 'scroll'
+                            
+                        },
+                        new go.Binding("text").makeTwoWay())
+                    // no ports, because no links are allowed to connect with a comment
+               ));
             // replace the default Link template in the linkTemplateMap
             myDiagram.linkTemplate =
                 $(go.Link,  // the whole link panel
@@ -175,7 +184,9 @@
                         resegmentable: true,
                         // mouse-overs subtly highlight links:
                         mouseEnter: function (e, link) { link.findObject("HIGHLIGHT").stroke = "rgba(30,144,255,0.2)"; },
-                        mouseLeave: function (e, link) { link.findObject("HIGHLIGHT").stroke = "transparent"; }
+                        mouseLeave: function (e, link) { link.findObject("HIGHLIGHT").stroke = "transparent"; },
+
+                        
                     },
                     new go.Binding("points").makeTwoWay(),
                     $(go.Shape,  // the highlight shape, normally transparent
@@ -185,16 +196,16 @@
                     $(go.Shape,  // the arrowhead
                         { toArrow: "standard", stroke: null, fill: "gray" }),
                     $(go.Panel, "Auto",  // the link label, normally not visible
-                        { visible: false, name: "LABEL", segmentIndex: 0, segmentFraction: 0 },
+                        { visible: false, name: "LABEL", segmentIndex: 2, segmentFraction: 0.5 },
                         new go.Binding("visible", "visible").makeTwoWay(),
                         $(go.Shape, "RoundedRectangle",  // the label shape
                             { fill: "#F8F8F8", stroke: null }),
-                        $(go.TextBlock, "",  // the label
+                        $(go.TextBlock, "Yes",  // the label
                             {
                                 textAlign: "center",
-                                font: "10pt helvetica, arial, sans-serif",
+                                font: "8pt helvetica, arial, sans-serif",
                                 stroke: "#333333",
-                                editable: false
+                                editable: true
                             },
                             new go.Binding("text").makeTwoWay())
                     )
@@ -216,11 +227,11 @@
                         "animationManager.duration": 800, // slightly longer than default (600ms) animation
                         nodeTemplateMap: myDiagram.nodeTemplateMap,  // share the templates used by myDiagram
                         model: new go.GraphLinksModel([  // specify the contents of the Palette
-                            //{ category: "Start", text: "Start" },
+                            { category: "Start", text: "Start" },
                             { text: "Pytanie" },
-                            { category: "Ans", text: "Odpowiedź"},
-                            //{ category: "End", text: "Koniec" },
-                            //{ category: "Comment", text: "" }
+                            { category: "Ans", text: "Odpowiedź" },
+                            //{ category: "End", text: "End" },
+                            { category: "Comment", text: "Komentarz" }
                         ])
                     });
         }
@@ -245,7 +256,7 @@
             var svg = myDiagram.makeSvg({
                 scale: 0.5
             });
-            svg.style.border = "10px solid black";
+            svg.style.border = "1px solid black";
             obj = document.getElementById("SVGArea");
             obj.appendChild(svg);
             if (obj.children.length > 0) {
@@ -256,20 +267,50 @@
             $('#sample').trigger('onload');
         });
     </script>
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/solid.css" integrity="sha384-QokYePQSOwpBDuhlHOsX0ymF6R/vLk/UQVz3WHa6wygxI5oGTmDTv8wahFOSspdm" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/regular.css" integrity="sha384-FKw7x8fCxuvzBwOJmhTJJsKzBl8dnN9e2R4+pXRfYoHivikuHkzWyhKWDSMcGNK8" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/brands.css" integrity="sha384-n9+6/aSqa9lBidZMRCQHTHKJscPq6NW4pCQBiMmHdUCvPN8ZOg2zJJTkC7WIezWv" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/fontawesome.css" integrity="sha384-vd1e11sR28tEK9YANUtpIOdjGW14pS87bUBuOIoBILVWLFnS+MCX9T6MMf0VdPGq" crossorigin="anonymous">
 </head>
-<body>
+<body style="background-image:url(random_grey_variations_@2X.png); color:white; font-family:monospace">
     <div id="sample" onload="init()">
-        <h3 style="text-align:center">Zbuduj skrypt - Contact.pl</h3>
+        <h2 style="text-align:center; font-family:monospace; " class="glow">Zbuduj skrypt - Contact.pl</h2>
+        <div style="float:right; width: 400px; padding: 25px ">
+            
+            <p <i class="far fa-hand-point-right"></i>   Aplikacja do budowania skryptów.</p>
+            <p <i class="far fa-hand-point-right"></i>   Rozpoczęcie budowy skryptu polega na przeciągnięciu na obszar płótna porządanego elementu.</p>
+            <p <i class="far fa-hand-point-right"></i>  
+                 Następnie łączymy elementy wedle uznania. Na każdym z kontenerów widnieją cztery bądz trzy kropki sugerujące
+                możliwości połączenia.
+            </p>
+            <p <i class="far fa-hand-point-right"></i>   Niechciany element usuwamy poprzez naciśnięcie del/delete/backspace na klawiaturze.</p>
+            <p <i class="far fa-hand-point-right"></i>   Po połączeniu dwóch elementów powstaje tzw. węzęł.</p>
+            <p <i class="far fa-hand-point-right"></i>   Węzłem można w pewnym stopniu manipulować. Może służyć do połączenia jednej bądź więcej alternatywnych scieżek.</p>
+
+            <button>Generuj skrypt</button>
+        </div>
         <div style="width:100%; white-space:nowrap;">
-            <span style="display: inline-block; vertical-align: top; padding: 5px; width:100px">
-                <div id="myPaletteDiv" style="border: solid 1px gray; height: 720px"></div>
+            <span style="display: inline-block; vertical-align: top; padding: 5px; width:130px">
+                <div id="myPaletteDiv" style="border: solid 3px white;background: azure; border-radius: 25px; height: 675px; -webkit-box-shadow: 10px 10px 40px 0px rgba(0,0,0,0.75);
+-moz-box-shadow: 10px 10px 40px 0px rgba(0,0,0,0.75);
+box-shadow: 10px 10px 40px 0px rgba(0,0,0,0.75); outline: none">
+                <button style:"margin-top: 690px">Generuj skrypt</button></div>
             </span>
-            <span style="display: inline-block; vertical-align: top; padding: 5px; width:80%">
-                <div id="myDiagramDiv" style="border: solid 1px gray; height: 720px"></div>
+
+            <span style="display: inline-block; vertical-align: top; padding: 5px; width:60%">
+                <div id="myDiagramDiv" style="border: solid 1px grey;border-radius: 25px; height: 675px;background: azure; -webkit-box-shadow: 10px 10px 40px 0px rgba(0,0,0,0.75);
+-moz-box-shadow: 10px 10px 40px 0px rgba(0,0,0,0.75);
+box-shadow: 10px 10px 40px 0px rgba(0,0,0,0.75);">
+                </div>
             </span>
         </div>
 
-        <div style="">
+        <!--<div>
+            <button id="SaveButton">Zapisz</button>
+        </div>-->
+
+
+        <div style="display:none">
             Diagram Model saved in JSON format:
             <textarea id="mySavedModel" style="width:100%;height:300px">
 { 

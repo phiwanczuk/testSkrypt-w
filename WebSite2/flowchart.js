@@ -12636,7 +12636,7 @@
       c.style.border = "0";
       c.style.outline = "none";
       c.style["white-space"] = "pre-wrap";
-      c.style.overflow = "hidden"
+      c.style.overflow = "scroll"
      }
      a.jl.appendChild(c);
      c.style.position = "absolute";
@@ -14224,7 +14224,7 @@
   c.style.visibility = "hidden";
   c.style.width = "200px";
   c.style.height = "150px";
-  c.style.overflow = "hidden";
+  c.style.overflow = "scroll";
   c.style.boxSizing = "content-box";
   c.appendChild(b);
   window.document.body.appendChild(c);
